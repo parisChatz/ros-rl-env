@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sdf version='1.6'>
+    <model name='cardboard_box'>
+      <pose frame=''>0 0 0 0 0 0</pose>
+      <link name='link'>
+        <inertial>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0.0416667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0566667</iyy>
+            <iyz>10</iyz>
+            <izz>10</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.0</mu>
+                <mu2>0.0</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>1e+07</kp>
+                <kd>1</kd>
+                <min_depth>0.001</min_depth>
+                <max_vel>0.5</max_vel>
+              </ode>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>100</max_contacts>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+      <plugin name="random" filename="libRandomVelocityPlugin.so">
+
+        <!-- Name of the link in this model that receives the velocity -->
+        <link>link</link>
+
+        <!-- Initial velocity that is applied to the link -->
+        <initial_velocity>0 2 0</initial_velocity>
+
+        <!-- Scaling factor that is used to compute a new velocity -->
+        <velocity_factor>1</velocity_factor>
+
+        <!-- Time, in seconds, between new velocities -->
+        <update_period>2</update_period>
+
+        <!-- Clamp the Z velocity value to zero. You can also clamp x and y values -->
+        <min_z>0</min_z>
+        <max_z>0</max_z>
+      </plugin>
+    </model>
+</sdf>

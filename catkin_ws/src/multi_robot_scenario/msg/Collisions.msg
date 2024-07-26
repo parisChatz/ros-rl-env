@@ -1,0 +1,4 @@
+time standard_timestep
+string collision1_name
+string collision2_name
+bool collision_detection

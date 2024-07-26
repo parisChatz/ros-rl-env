@@ -1,0 +1,10 @@
+# SpawnModels.srv
+string model_name
+float64 x
+float64 y
+float64 z
+int32 num_models
+string sdf_file_path
+---
+bool success
+string message
