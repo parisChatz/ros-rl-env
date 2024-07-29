@@ -1,6 +1,6 @@
 <launch>
   <arg name="gui" value="true"/>
-  <arg name="rviz" value="false"/>
+  <arg name="rviz" value="true"/>
   <!-- TD3_i_map for I shaped map or TD3.world for our map -->
   <arg name="world_name" value="TD3.world"/>
 
