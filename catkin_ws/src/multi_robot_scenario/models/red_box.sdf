@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <sdf version="1.6">
-  <model name="green_box_3">
+  <model name="red_box">
     <pose frame=''>0 0 0 0 -0 0</pose>
     <link name="link">
       <collision name="collision">
