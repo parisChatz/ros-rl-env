@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <sdf version='1.6'>
-    <model name='cardboard_box'>
+    <model name='moving_box'>
       <pose frame=''>0 0 0 0 0 0</pose>
       <link name='link'>
         <inertial>
