@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+This world file defines a Gazebo simulation environment with the following features:
+1. A 10x10 rectangle of walls centered at (0, 0):
+  - The walls are 2 meters tall.
+  - The walls are positioned to form a square boundary with each side being 10 meters long.
+  - The walls are static and do not move.
+
+2. A ground plane:
+  - The ground plane is 100x100 meters in size.
+  - The ground plane is static and does not move.
+  - The ground plane has a friction coefficient to simulate realistic interactions with objects.
+
+3. A directional light source (sun):
+  - The light source casts shadows.
+  - The light source is positioned at (0, 0, 10) and directed at an angle.
+  - The light source has specified diffuse and specular properties.
+
+The environment is designed for simulation purposes and does not include a ceiling.
+-->
+
+<sdf version="1.6">
+  <world name="default">
+    <light name="sun" type="directional">
+      <cast_shadows>1</cast_shadows>
+      <pose frame="">0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.5 -1</direction>
+    </light>
+
+    <!-- Ground Plane -->
+    <model name="ground_plane">
+      <static>1</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name="visual">
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Outer Walls (10x10) -->
+    <model name="outer_wall_1">
+      <static>1</static>
+      <link name="link">
+        <pose>0 5 1 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>10 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>10 0.1 2</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="outer_wall_2">
+      <static>1</static>
+      <link name="link">
+        <pose>0 -5 1 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>10 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>10 0.1 2</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="outer_wall_3">
+      <static>1</static>
+      <link name="link">
+        <pose>5 0 1 0 0 1.5708</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>10 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>10 0.1 2</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="outer_wall_4">
+      <static>1</static>
+      <link name="link">
+        <pose>-5 0 1 0 0 1.5708</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>10 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>10 0.1 2</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Inner Walls (2x2) -->
+    <model name="inner_wall_2">
+      <static>1</static>
+      <link name="link">
+        <pose>0 -1 1 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2 0.1 2</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="inner_wall_3">
+      <static>1</static>
+      <link name="link">
+        <pose>1 0 1 0 0 1.5708</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2 0.1 2</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="inner_wall_4">
+      <static>1</static>
+      <link name="link">
+        <pose>-1 0 1 0 0 1.5708</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>2 0.1 2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>2 0.1 2</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type="adiabatic"/>
+  </world>
+</sdf>
