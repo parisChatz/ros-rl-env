@@ -100,9 +100,9 @@ The environment is designed for simulation purposes and does not include a ceili
           </geometry>
           <material>
             <script>
-              <uri>model://media/materials/scripts/</uri>
-              <uri>model://media/materials/textures/</uri>
-              <name>Gazebo/wall_texture</name>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
             </script>
           </material>
         </visual>
@@ -128,8 +128,9 @@ The environment is designed for simulation purposes and does not include a ceili
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wall</name>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
             </script>
           </material>
         </visual>
@@ -155,8 +156,9 @@ The environment is designed for simulation purposes and does not include a ceili
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wall</name>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
             </script>
           </material>
         </visual>
@@ -182,8 +184,9 @@ The environment is designed for simulation purposes and does not include a ceili
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wall</name>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
             </script>
           </material>
         </visual>
@@ -210,8 +213,9 @@ The environment is designed for simulation purposes and does not include a ceili
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wall</name>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
             </script>
           </material>
         </visual>
@@ -237,8 +241,9 @@ The environment is designed for simulation purposes and does not include a ceili
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wall</name>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
             </script>
           </material>
         </visual>
@@ -264,8 +269,9 @@ The environment is designed for simulation purposes and does not include a ceili
           </geometry>
           <material>
             <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wall</name>
+              <uri>model://wall_model/materials/scripts/</uri>
+              <uri>model://wall_model/materials/textures/</uri>
+              <name>WallTexture</name>
             </script>
           </material>
         </visual>
