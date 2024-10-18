@@ -2,7 +2,7 @@
   <arg name="gui" value="true"/>
   <arg name="rviz" value="true"/>
   <!-- TD3_i_map for I shaped map or TD3.world for our map -->
-  <arg name="world_name" value="TD3_i_map.world"/>
+  <arg name="world_name" value="$(find multi_robot_scenario)/worlds/TD3_i_map.world"/>
 
     <!-- Gazebo  -->
     <include file="$(find multi_robot_scenario)/launch/empty_world.launch">
