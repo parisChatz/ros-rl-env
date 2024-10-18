@@ -1,16 +1,8 @@
 /catkin_ws/build_isolated
 /catkin_ws/devel_isolated
 .catkin_workspace
-/TD3/runs
-/TD3/pytorch_models_conv
-/TD3/results
 *.pth
 *.npy
-config.py
-experiments
-TD3_config.py
-PPO_config.py
-
 
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
@@ -175,4 +167,3 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 .vscode
-
