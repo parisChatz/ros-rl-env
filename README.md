@@ -1,62 +1,54 @@
-# DRL-robot-navigation
+# Pioneer 3DX ROS Environment for Reinforcement Learning
 
-Deep Reinforcement Learning for mobile robot navigation in ROS Gazebo simulator. This is the workspace for the robot and the simulation environment on ROS. The robot learns to navigate to a random goal point in a simulated environment while avoiding obstacles. The robot is a pioneer3dx and it uses an rgb camera and a lidar.
+This repository contains the ROS environment necessary for launching and controlling the **Pioneer 3DX** robot in a Gazebo simulation. It is specifically designed to work with a custom [Gymnasium-ROS wrapper](https://github.com/mazqtpopx/cranfield-navigation-gym.git) that integrates ROS and reinforcement learning (RL) for training and controlling the robot.
 
-Tested with ROS Noetic on Ubuntu 20.04 with python 3.8.10 and pytorch 1.10.
+## Table of Contents
+- [Overview](#overview)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Launching the Environment](#launching-the-environment)
+  - [Controlling the Pioneer 3DX](#controlling-the-pioneer-3dx)
+- [Packages Included](#packages-included)
+- [License](#license)
 
-**Installation and code overview tutorial available** [here](https://medium.com/@reinis_86651/deep-reinforcement-learning-in-mobile-robot-navigation-tutorial-part1-installation-d62715722303)
+## Overview
 
-Training example:
-<p align="center">
-    <img width=100% src="https://github.com/reiniscimurs/DRL-robot-navigation/blob/main/training.gif">
-</p>
+This environment, including the ROS map and robot configuration, is based on the [DRL robot navigation](https://github.com/reiniscimurs/DRL-robot-navigation) repository and the work described in the publication [Goal-Driven Autonomous Exploration Through Deep Reinforcement Learning](https://ieeexplore.ieee.org/document/9645287?source=authoralert).
+
+The environment supports launching the **Pioneer 3DX** robot in Gazebo. It includes all necessary configurations and packages to bring up, describe, and control the robot.
 
 ## Installation
-Main dependencies: 
 
-* [ROS Noetic](http://wiki.ros.org/noetic/Installation)
+### Prerequisites
 
-Clone the repository:
-```shell
-cd ~
-### Clone this repo
-git clone 
-git checkout -b feature/ros-catkin-env
-```
-The network can be run with a standard 2D laser, but this implementation uses a simulated [3D Velodyne sensor](https://github.com/lmark1/velodyne_simulator)
+- **[ROS Noetic](http://wiki.ros.org/noetic/Installation)**: Ensure that ROS Noetic is installed and sourced.
+- **Gazebo 11**: Required for simulation.
+- **Python 3.8+**: For using Gymnasium-based reinforcement learning environments.
 
-Compile the workspace:
-```shell
-cd ~/DRL-robot-nav/catkin_ws
-### Compile
-catkin_make_isolated
-```
-## If you want to use this workspace be sure to:
+### Setting Up the Workspace
 
-Open a terminal and set up sources:
-```shell
-export ROS_HOSTNAME=localhost
-export ROS_MASTER_URI=http://localhost:11311
-export ROS_PORT_SIM=11311
-export GAZEBO_RESOURCE_PATH=~/DRL-robot-nav/catkin_ws/src/multi_robot_scenario/launch
-source ~/.bashrc
-cd ~/DRL-robot-nav/catkin_ws
-source devel_isolated/setup.bash
-```
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/parisChatz/ros-rl-env.git
+    cd ~/ros-rl-env/catkin_ws
+    ```
 
-## Testing
-In the same terminal do: 
-```
+2. Build the Catkin workspace:
+    ```bash
+    catkin_make_isolated
+    ```
+
+3. Source the workspace:
+    ```bash
+    source devel_isolated/setup.bash
+    ```
+
+## Usage
+
+### Launching the Environment
+
+To launch the simulation environment for the Pioneer 3DX robot:
+```bash
+source catkin_ws/devel_isolated/setup.bash
 roslaunch multi_robot_scenario multi_robot_scenario.launch
 ```
-
-Gazebo environment:
-<p align="center">
-    <img width=80% src="https://github.com/reiniscimurs/DRL-robot-navigation/blob/main/env1.png">
-</p>
-
-Rviz:
-<p align="center">
-    <img width=80% src="https://github.com/reiniscimurs/DRL-robot-navigation/blob/main/velodyne.png">
-</p>
-
