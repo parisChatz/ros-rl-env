@@ -7,9 +7,6 @@ This repository contains the ROS environment necessary for launching and control
 - [Installation](#installation)
 - [Usage](#usage)
   - [Launching the Environment](#launching-the-environment)
-  - [Controlling the Pioneer 3DX](#controlling-the-pioneer-3dx)
-- [Packages Included](#packages-included)
-- [License](#license)
 
 ## Overview
 
