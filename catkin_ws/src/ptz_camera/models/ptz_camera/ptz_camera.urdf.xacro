@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:property name="M_PI" value="3.1415926535897931" />
+
+    <xacro:macro name="ptz_camera" params="name parent *origin pan_limit tilt_limit ros_topic cam_info_topic update_rate res_x res_y image_format hfov">
+        <!-- Joint to Parent Link -->
+        <joint name="${name}_joint" type="fixed">
+            <xacro:insert_block name="origin" />
+            <parent link="${parent}"/>
+            <child link="${name}_base_link"/>
+        </joint>
+        
+        <!-- Base Link -->
+        <link name="${name}_base_link">
+            <visual>
+                <geometry>
+                    <box size="0.1 0.1 0.1"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="0.1 0.1 0.1"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.5"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="0.000833" ixy="0" ixz="0" iyy="0.000833" iyz="0" izz="0.000833"/>
+            </inertial>
+        </link>
+
+        <!-- Pan joint: Base to Camera (Yaw) -->
+        <joint name="${name}_pan_joint" type="continuous">
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+            <parent link="${name}_base_link"/>
+            <child link="${name}_pan_link"/>
+            <axis xyz="0 0 -1"/>
+            <!-- <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="0.001" velocity="1.0"/> -->
+        </joint>
+
+        <!-- Pan Link -->
+        <link name="${name}_pan_link">
+            <visual>
+                <geometry>
+                    <cylinder radius="0.05" length="0.01"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <cylinder radius="0.05" length="0.01"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.1"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="6.333e-05" ixy="0" ixz="0" iyy="6.333e-05" iyz="0" izz="0.000125"/>
+            </inertial>
+        </link>
+
+        <!-- Tilt joint: Pan Link to Camera Link (Pitch) -->
+        <joint name="${name}_tilt_joint" type="revolute">
+            <origin xyz="0 0 0.005" rpy="0 0 0"/>
+            <parent link="${name}_pan_link"/>
+            <child link="${name}_tilt_link"/>
+            <axis xyz="1 0 0"/>
+            <limit lower="${-(tilt_limit/2) * M_PI / 180}" upper="${(tilt_limit/2) * M_PI / 180}" effort="0.001" velocity="1.0"/>
+        </joint>
+
+        <!-- Tilt Link -->
+        <link name="${name}_tilt_link">
+            <visual>
+                <geometry>
+                    <sphere radius="0.04"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <sphere radius="0.04"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.2"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="0.000128" ixy="0" ixz="0" iyy="0.000128" iyz="0" izz="0.000128"/>
+            </inertial>
+        </link>
+
+        <!-- Optical frame joint -->
+        <joint name="${name}_optical_joint" type="fixed">
+            <origin xyz="0 0 0.05" rpy="${M_PI/2} ${-M_PI/2} 0"/>
+            <parent link="${name}_tilt_link"/>
+            <child link="${name}_optical_frame"/>
+        </joint>
+
+        <!-- Optical Frame -->
+        <link name="${name}_optical_frame">
+            <visual>
+                <geometry>
+                    <box size="0.01 0.01 0.01"/>
+                </geometry>
+            </visual>
+        </link>
+
+        <!-- Transmissions -->
+        <transmission name="${name}_pan_joint_trans">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}_pan_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${name}_pan_joint_motor">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <transmission name="${name}_tilt_joint_trans">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}_tilt_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${name}_tilt_joint_motor">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+
+        <gazebo>
+            <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+                <robotNamespace>/uav1/${name}</robotNamespace>
+                <!-- <robotParam>/uav1/robot_description</robotParam> -->
+                <controlPeriod>0.001</controlPeriod>
+            </plugin>
+        </gazebo>
+
+        <gazebo reference="${name}_optical_frame">
+            <sensor type="camera" name="${name}_sensor">
+                <update_rate>${update_rate}</update_rate>
+                <camera>
+                <horizontal_fov>${hfov * M_PI/180.0}</horizontal_fov>
+                <image>
+                    <format>${image_format}</format>
+                    <width>${res_x}</width>
+                    <height>${res_y}</height>
+                </image>
+                <clip>
+                    <near>0.01</near>
+                    <far>100</far>
+                </clip>
+                </camera>
+
+                <plugin name="${name}_controller" filename="libgazebo_ros_camera.so">
+                    <cameraName>${name}</cameraName>
+                    <imageTopicName>${ros_topic}</imageTopicName>
+                    <cameraInfoTopicName>${cam_info_topic}</cameraInfoTopicName>
+                    <frameName>${name}_optical_frame</frameName>
+                </plugin>
+            </sensor>
+        </gazebo>
+
+
+    </xacro:macro>
+</robot>

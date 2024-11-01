@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="rviz" value="true"/>
+  <arg name="gui" value="false"/>
+  <arg name="name" default="uav1"/>
+
+  <!-- Start Gazebo with wg world running in (max) realtime -->
+  <include file="$(find hector_gazebo_worlds)/launch/rolling_landscape_120m.launch">
+      <arg name="gui" value="$(arg gui)" />
+  </include>
+
+  <!-- Spawn simulated quadrotor uav -->
+  <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor_with_cam.launch" >
+    <arg name="name" default="$(arg name)"/>
+  </include>
+  
+  <!-- Start rviz visualization with preset config -->
+  <group if="$(arg rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find hector_quadrotor_demo)/rviz_cfg/outdoor_flight_original.rviz" />
+  </group>
+  
+</launch>

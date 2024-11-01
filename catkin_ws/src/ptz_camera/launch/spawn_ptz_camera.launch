@@ -1,0 +1,38 @@
+<launch>
+    <!-- Load the robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find ptz_camera)/models/ptz_camera/ptz_camera_robot.urdf.xacro'" />
+
+    <!-- Spawn the robot in Gazebo -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find ptz_camera)/worlds/test_world.world"/>
+    </include>
+
+    <!-- Spawn the robot -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+            args="-param robot_description -urdf -model ptz_camera -x 0 -y 0 -z 0.1" />
+
+    <!-- Load the controller configurations -->
+    <rosparam ns="/ptz_camera" file="$(find ptz_camera)/config/ptz_camera_controllers.yaml" command="load"/>
+
+    <!-- Start the controller spawner -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" ns="/ptz_camera" args="joint_state_controller yaw_position_controller pitch_position_controller "/>
+
+    <!-- Start the robot state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="/ptz_camera"/>
+
+    <!-- Launch rqt_image_view to visualize the camera image -->
+    <node pkg="rqt_image_view" type="rqt_image_view" name="rqt_image_view" output="screen">
+        <!-- Remap the topic to the desired image topic -->
+        <remap from="/image" to="/ptz_camera/image_raw"/>
+    </node>
+
+    <!-- Launch the PTZ Camera Controller Node (if applicable) -->
+    <!-- Uncomment and adjust if you have a custom PTZ controller node -->
+    <node name="PTZCameraController" pkg="ptz_camera" type="ptz_control.py" output="screen"/>
+
+    <!-- Launch the teleop_twist_keyboard Node (if applicable) -->
+    <!-- Uncomment if you wish to use keyboard teleoperation -->
+    <node name="teleop_twist_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
+
+</launch>

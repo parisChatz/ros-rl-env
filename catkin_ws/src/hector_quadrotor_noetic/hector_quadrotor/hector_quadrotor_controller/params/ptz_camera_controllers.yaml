@@ -1,0 +1,28 @@
+joint_state_controller:
+  type: "joint_state_controller/JointStateController"
+  publish_rate: 100
+
+ptz_cam_pan_position_controller:
+  type: "position_controllers/JointPositionController"
+  joint: "ptz_cam_pan_joint"
+
+ptz_cam_tilt_position_controller:
+  type: "position_controllers/JointPositionController"
+  joint: "ptz_cam_tilt_joint"
+
+gazebo_ros_control:
+  pid_gains:
+    ptz_cam_pan_joint:
+      p: 10.0
+      i: 0.01
+      d: 0.02
+      i_clamp_max: 1.0
+      i_clamp_min: -1.0
+      antiwindup: true
+    ptz_cam_tilt_joint:
+      p: 10.0
+      i: 0.2
+      d: 0.02
+      i_clamp_max: 1.0
+      i_clamp_min: -1.0
+      antiwindup: true

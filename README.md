@@ -1,4 +1,4 @@
-# Pioneer 3DX ROS Environment for Reinforcement Learning
+# ROS Environment for Reinforcement Learning
 
 This repository contains the ROS environment necessary for launching and controlling the **Pioneer 3DX** robot in a Gazebo simulation. It is specifically designed to work with a custom [Gymnasium-ROS wrapper](https://github.com/mazqtpopx/cranfield-navigation-gym.git) that integrates ROS and reinforcement learning (RL) for training and controlling the robot.
 
@@ -49,3 +49,9 @@ To launch the simulation environment for the Pioneer 3DX robot:
 source catkin_ws/devel_isolated/setup.bash
 roslaunch multi_robot_scenario multi_robot_scenario.launch
 ```
+
+## Future Developments
+1. Addition of a drone platform
+2. Addition of moving gazebo obstacles
+
+
