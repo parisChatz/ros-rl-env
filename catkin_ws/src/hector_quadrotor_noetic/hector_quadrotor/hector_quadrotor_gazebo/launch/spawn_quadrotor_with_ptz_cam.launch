@@ -3,11 +3,11 @@
 <launch>
     <param name="use_sim_time" value="true" />
 
-    <arg name="name" default="uav"/>
+    <arg name="name" default="uav1"/>
     <arg name="model" default="$(find hector_quadrotor_description)/urdf/quadrotor_with_ptz_cam.gazebo.xacro"/>
 
-    <arg name="hover" default="true"/>
-    <arg name="ptz_keyboard_control" default="true"/>
+    <arg name="hover" default="false"/>
+    <arg name="ptz_keyboard_control" default="false"/>
 
     <arg name="x" default="-2.0"/>
     <arg name="y" default="0.0"/>
