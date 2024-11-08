@@ -6,6 +6,8 @@
   <arg name="name" default="uav1"/>
 
   <!-- Start Gazebo with wg world running in (max) realtime -->
+  <!-- Custom maps -->
+  <!-- <include file="$(find hector_gazebo_worlds)/launch/map_collection.launch"> -->
   <include file="$(find hector_gazebo_worlds)/launch/rolling_landscape_120m.launch">
       <arg name="gui" value="$(arg gui)" />
   </include>
