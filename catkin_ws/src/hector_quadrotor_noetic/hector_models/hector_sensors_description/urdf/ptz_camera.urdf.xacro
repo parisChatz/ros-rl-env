@@ -34,11 +34,11 @@
 
         <!-- Pan joint: Base to Camera (Yaw) -->
         <joint name="${name}_pan_joint" type="continuous">
-            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+            <origin xyz="0 0 0.05" rpy="0 0 -1.57"/>
             <parent link="${name}_base_link"/>
             <child link="${name}_pan_link"/>
             <axis xyz="0 0 -1"/>
-            <!-- <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="0.001" velocity="1.0"/> -->
+            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="0.001" velocity="1.0"/>
         </joint>
 
         <!-- Pan Link -->
