@@ -2,11 +2,11 @@ joint_state_controller:
   type: "joint_state_controller/JointStateController"
   publish_rate: 100
 
-ptz_cam_pan_position_controller:
+ptz_pan_controller:
   type: "position_controllers/JointPositionController"
   joint: "ptz_cam_pan_joint"
 
-ptz_cam_tilt_position_controller:
+ptz_tilt_controller:
   type: "position_controllers/JointPositionController"
   joint: "ptz_cam_tilt_joint"
 
