@@ -17,12 +17,12 @@ class PTZCameraController:
         print(robot_name)
         # Define publishers for the joint controllers
         self.pan_pub = rospy.Publisher(
-            robot_name + "/ptz_cam/ptz_cam_pan_position_controller/command",
+            "ptz_cam/ptz_pan_controller/command",
             Float64,
             queue_size=10,
         )
         self.tilt_pub = rospy.Publisher(
-            robot_name + "/ptz_cam/ptz_cam_tilt_position_controller/command",
+            "ptz_cam/ptz_tilt_controller/command",
             Float64,
             queue_size=10,
         )
@@ -32,20 +32,25 @@ class PTZCameraController:
         self.tilt_angle = 0.0
 
         # Movement speeds (radians per command unit)
-        self.pan_speed = rospy.get_param("~pan_speed", 0.05)
-        self.tilt_speed = rospy.get_param("~tilt_speed", 0.05)
+        self.pan_speed = rospy.get_param("~pan_speed", 1)
+        self.tilt_speed = rospy.get_param("~tilt_speed", 1)
 
         # Subscribe to Twist messages
-        self.cmd_sub = rospy.Subscriber(
-            robot_name + "/ptz_cam/cmd_vel", Twist, self.cmd_vel_callback
+        self.cmd_sub = rospy.Subscriber("ptz_cam/cmd_vel", Twist, self.cmd_vel_callback)
+
+        # Set up a timer to publish the angles at a fixed rate (e.g., 10 Hz)
+        self.publish_timer = rospy.Timer(
+            rospy.Duration(0.1), self.publish_timer_callback
         )
 
-        # Publish initial positions
-
-    def publish_angles(self, pan_angle, tilt_angle):
+    def publish_angles(self):
         # Publish commands to the joints
-        self.pan_pub.publish(Float64(pan_angle))
-        self.tilt_pub.publish(Float64(tilt_angle))
+        self.pan_pub.publish(Float64(self.pan_angle))
+        self.tilt_pub.publish(Float64(self.tilt_angle))
+
+    def publish_timer_callback(self, event):
+        # Continuously publish the current angles
+        self.publish_angles()
 
     def cmd_vel_callback(self, msg):
         # Update pan and tilt angles based on Twist message
@@ -53,11 +58,22 @@ class PTZCameraController:
         self.pan_angle += self.pan_speed * msg.angular.z
         self.tilt_angle += self.tilt_speed * msg.linear.x
 
-        # Enforce joint limits
-        # self.enforce_joint_limits(self.pan_angle, self.tilt_angle)
+        # Enforce joint limits (optional)
+        # self.enforce_joint_limits()
 
         # Publish updated angles immediately
-        self.publish_angles(self.pan_angle, self.tilt_angle)
+        self.publish_angles()
+
+    def enforce_joint_limits(self):
+        # Define your joint limits here if necessary
+        pan_min = -math.pi
+        pan_max = math.pi
+        tilt_min = -math.pi / 2
+        tilt_max = math.pi / 2
+
+        # Clamp the angles to the joint limits
+        self.pan_angle = max(min(self.pan_angle, pan_max), pan_min)
+        self.tilt_angle = max(min(self.tilt_angle, tilt_max), tilt_min)
 
     def run(self):
         # Keep the node running and processing callbacks
