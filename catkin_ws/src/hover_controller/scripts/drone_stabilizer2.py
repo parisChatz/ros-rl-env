@@ -46,20 +46,17 @@ class DroneStabilizer:
 
         # Subscriber to /ground_truth/state topic (nav_msgs/Odometry) for altitude, roll, and pitch stabilization
         self.odom_sub = rospy.Subscriber(
-            "/uav1/ground_truth/state", Odometry, self.odom_callback
+            "ground_truth/state", Odometry, self.odom_callback
         )
 
         # Subscriber to /cmd_vel topic to log the 6 velocity components
-        self.cmd_vel_sub = rospy.Subscriber(
-            "/uav1/cmd_vel", Twist, self.cmd_vel_callback
-        )
+        self.cmd_vel_sub = rospy.Subscriber("cmd_vel", Twist, self.cmd_vel_callback)
 
         # Publisher for the velocity command to control the drone
-        self.cmd_vel_pub = rospy.Publisher("/uav1/cmd_vel", Twist, queue_size=10)
-        self.cmd_vel_pub2 = rospy.Publisher("/uav2/cmd_vel", Twist, queue_size=10)
+        self.cmd_vel_pub = rospy.Publisher("cmd_vel", Twist, queue_size=10)
 
         # Target altitude (in meters), roll (in rad/s), and pitch (in rad/s)
-        self.target_altitude = 3  # Target altitude (1 meter)
+        self.target_altitude = 1  # Target altitude (1 meter)
         self.target_roll = 0.0  # Target roll angular velocity (rad/s)
         self.target_pitch = 0.0  # Target pitch angular velocity (rad/s)
 
@@ -113,7 +110,6 @@ class DroneStabilizer:
 
         # Publish the modified velocity message
         self.cmd_vel_pub.publish(twist_msg)
-        self.cmd_vel_pub2.publish(twist_msg)
 
     def run(self):
         rospy.spin()
