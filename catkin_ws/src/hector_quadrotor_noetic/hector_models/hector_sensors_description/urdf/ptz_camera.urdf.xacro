@@ -101,8 +101,40 @@
             <child link="${name}_optical_frame"/>
         </joint>
 
+        <!-- Optical frame joint -->
+        <joint name="${name}_optical_joint_x2" type="fixed">
+            <origin xyz="0 0 0.05" rpy="${M_PI/2} ${-M_PI/2} 0"/>
+            <parent link="${name}_tilt_link"/>
+            <child link="${name}_optical_frame_x2"/>
+        </joint>
+
+        <!-- Optical frame joint -->
+        <joint name="${name}_optical_joint_x4" type="fixed">
+            <origin xyz="0 0 0.05" rpy="${M_PI/2} ${-M_PI/2} 0"/>
+            <parent link="${name}_tilt_link"/>
+            <child link="${name}_optical_frame_x4"/>
+        </joint>
+
         <!-- Optical Frame -->
         <link name="${name}_optical_frame">
+            <visual>
+                <geometry>
+                    <box size="0.01 0.01 0.01"/>
+                </geometry>
+            </visual>
+        </link>
+
+                <!-- Optical Frame -->
+        <link name="${name}_optical_frame_x2">
+            <visual>
+                <geometry>
+                    <box size="0.01 0.01 0.01"/>
+                </geometry>
+            </visual>
+        </link>
+
+                <!-- Optical Frame -->
+        <link name="${name}_optical_frame_x4">
             <visual>
                 <geometry>
                     <box size="0.01 0.01 0.01"/>
@@ -136,6 +168,7 @@
 
         <gazebo>
             <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <!-- TODO remove the uav1. this will cause problems -->
                 <robotNamespace>/uav1/${name}</robotNamespace>
                 <!-- <robotParam>/uav1/robot_description</robotParam> -->
                 <controlPeriod>0.001</controlPeriod>
@@ -146,7 +179,7 @@
             <sensor type="camera" name="${name}_sensor">
                 <update_rate>${update_rate}</update_rate>
                 <camera>
-                <horizontal_fov>${hfov * M_PI/180.0}</horizontal_fov>
+                <horizontal_fov>1.57</horizontal_fov>
                 <image>
                     <format>${image_format}</format>
                     <width>${res_x}</width>
@@ -158,11 +191,67 @@
                 </clip>
                 </camera>
 
-                <plugin name="${name}_controller" filename="libgazebo_ros_camera.so">
+                <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
                     <cameraName>${name}</cameraName>
                     <imageTopicName>${ros_topic}</imageTopicName>
                     <cameraInfoTopicName>${cam_info_topic}</cameraInfoTopicName>
                     <frameName>${name}_optical_frame</frameName>
+                    <dynamic_parameters>true</dynamic_parameters>
+                    <horizontal_fov>1.047</horizontal_fov>
+
+                </plugin>
+            </sensor>
+        </gazebo>
+
+        <gazebo reference="${name}_optical_frame_x2">
+            <sensor type="camera" name="${name}_sensor_x2">
+                <update_rate>${update_rate}</update_rate>
+                <camera>
+                <horizontal_fov>0.78</horizontal_fov>
+                <image>
+                    <format>${image_format}</format>
+                    <width>${res_x}</width>
+                    <height>${res_y}</height>
+                </image>
+                <clip>
+                    <near>0.01</near>
+                    <far>100</far>
+                </clip>
+                </camera>
+
+                <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+                    <cameraName>${name}_x2</cameraName>
+                    <imageTopicName>${ros_topic}_x2</imageTopicName>
+                    <cameraInfoTopicName>${cam_info_topic}</cameraInfoTopicName>
+                    <frameName>${name}_optical_frame_x2</frameName>
+                    <horizontal_fov>0.78</horizontal_fov>
+                </plugin>
+            </sensor>
+        </gazebo>
+        
+        <gazebo reference="${name}_optical_frame_x4">
+            <sensor type="camera" name="${name}_sensor_x4">
+                <update_rate>${update_rate}</update_rate>
+                <camera>
+                <horizontal_fov>0.39</horizontal_fov>
+                <image>
+                    <format>${image_format}</format>
+                    <width>${res_x}</width>
+                    <height>${res_y}</height>
+                </image>
+                <clip>
+                    <near>0.01</near>
+                    <far>100</far>
+                </clip>
+                </camera>
+
+                <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+                    <cameraName>${name}_x4</cameraName>
+                    <imageTopicName>${ros_topic}_x4</imageTopicName>
+                    <cameraInfoTopicName>${cam_info_topic}</cameraInfoTopicName>
+                    <frameName>${name}_optical_frame_x4</frameName>
+                    <horizontal_fov>0.39</horizontal_fov>
+
                 </plugin>
             </sensor>
         </gazebo>
