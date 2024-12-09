@@ -1,6 +1,6 @@
 joint_state_controller:
   type: "joint_state_controller/JointStateController"
-  publish_rate: 100
+  publish_rate: 1000
 
 ptz_pan_controller:
   type: "position_controllers/JointPositionController"
@@ -10,19 +10,32 @@ ptz_tilt_controller:
   type: "position_controllers/JointPositionController"
   joint: "ptz_cam_tilt_joint"
 
+ptz_roll_controller:
+  type: "position_controllers/JointPositionController"
+  joint: "ptz_cam_roll_joint"
+
+
+
 gazebo_ros_control:
   pid_gains:
     ptz_cam_pan_joint:
       p: 10.0
-      i: 0.01
-      d: 0.02
+      i: 0.2
+      d: 0.2
       i_clamp_max: 1.0
       i_clamp_min: -1.0
       antiwindup: true
     ptz_cam_tilt_joint:
       p: 10.0
-      i: 0.2
-      d: 0.02
+      i: 50.0
+      d: 0.0002
+      i_clamp_max: 1.0
+      i_clamp_min: -1.0
+      antiwindup: true
+    ptz_cam_roll_joint:
+      p: 10.0
+      i: 50.0
+      d: 0.0002
       i_clamp_max: 1.0
       i_clamp_min: -1.0
       antiwindup: true

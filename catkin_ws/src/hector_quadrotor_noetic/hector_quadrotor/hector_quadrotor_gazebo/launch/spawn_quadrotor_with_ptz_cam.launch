@@ -42,7 +42,7 @@
 
         <!-- Start the controller spawner -->
         <node name="ptz_camera_controller_spawner" pkg="controller_manager" type="spawner" respawn="true" output="screen" ns="ptz_cam"
-            args="joint_state_controller ptz_pan_controller ptz_tilt_controller"/>
+            args="joint_state_controller ptz_pan_controller ptz_tilt_controller ptz_roll_controller"/>
     
         <!-- Launch the PTZ Camera Controller Node -->
         <node name="PTZCameraController" pkg="ptz_camera" type="ptz_control.py" output="screen"/>
@@ -52,7 +52,7 @@
         </node> -->
         
         <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
-            <param name="publish_rate" type="double" value="100.0" />
+            <param name="publish_rate" type="double" value="1000.0" />
         </node>
     </group>
 

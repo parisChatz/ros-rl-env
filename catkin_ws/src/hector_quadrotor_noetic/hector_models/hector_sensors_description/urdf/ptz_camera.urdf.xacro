@@ -38,7 +38,7 @@
             <parent link="${name}_base_link"/>
             <child link="${name}_pan_link"/>
             <axis xyz="0 0 -1"/>
-            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="0.1" velocity="1.0"/>
+            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="1.0" velocity="1.0"/>
         </joint>
 
         <!-- Pan Link -->
@@ -69,7 +69,7 @@
             <parent link="${name}_pan_link"/>
             <child link="${name}_tilt_link"/>
             <axis xyz="1 0 0"/>
-            <limit lower="${-(tilt_limit/2) * M_PI / 180}" upper="${(tilt_limit/2) * M_PI / 180}" effort="0.1" velocity="1.0"/>
+            <limit lower="${-(tilt_limit/2) * M_PI / 180}" upper="${(tilt_limit/2) * M_PI / 180}" effort="1000.0" velocity="1.0"/>
         </joint>
 
         <!-- Tilt Link -->
@@ -94,24 +94,56 @@
             </inertial>
         </link>
 
+
+        <!-- Roll joint: roll Link to Camera Link (Roll) -->
+        <joint name="${name}_roll_joint" type="revolute">
+            <origin xyz="0 0 0.005" rpy="0 0 0"/>
+            <parent link="${name}_tilt_link"/>
+            <child link="${name}_roll_link"/>
+            <axis xyz="0 1 0"/>
+            <limit lower="${-(tilt_limit/2) * M_PI / s180}" upper="${(tilt_limit/2) * M_PI / 180}" effort="1000.0" velocity="1.0"/>
+        </joint>
+
+        <!-- Tilt Link -->
+        <link name="${name}_roll_link">
+            <visual>
+                <geometry>
+                    <sphere radius="0.04"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+            <collision>
+                <geometry>
+                    <sphere radius="0.04"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.2"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="0.000128" ixy="0" ixz="0" iyy="0.000128" iyz="0" izz="0.000128"/>
+            </inertial>
+        </link>
+
         <!-- Optical frame joint -->
         <joint name="${name}_optical_joint" type="fixed">
             <origin xyz="0 0 0.05" rpy="${M_PI/2} ${-M_PI/2} 0"/>
-            <parent link="${name}_tilt_link"/>
+            <parent link="${name}_roll_link"/>
             <child link="${name}_optical_frame"/>
         </joint>
 
         <!-- Optical frame joint -->
         <joint name="${name}_optical_joint_x2" type="fixed">
             <origin xyz="0 0 0.05" rpy="${M_PI/2} ${-M_PI/2} 0"/>
-            <parent link="${name}_tilt_link"/>
+            <parent link="${name}_roll_link"/>
             <child link="${name}_optical_frame_x2"/>
         </joint>
 
         <!-- Optical frame joint -->
         <joint name="${name}_optical_joint_x4" type="fixed">
             <origin xyz="0 0 0.05" rpy="${M_PI/2} ${-M_PI/2} 0"/>
-            <parent link="${name}_tilt_link"/>
+            <parent link="${name}_roll_link"/>
             <child link="${name}_optical_frame_x4"/>
         </joint>
 
@@ -164,6 +196,19 @@
                 <mechanicalReduction>1</mechanicalReduction>
             </actuator>
         </transmission>
+
+
+        <transmission name="${name}_roll_joint_trans">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}_roll_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${name}_roll_joint_motor">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
 
 
         <gazebo>
