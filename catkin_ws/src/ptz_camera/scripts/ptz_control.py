@@ -7,6 +7,7 @@ from squaternion import Quaternion
 import math
 import numpy as np
 
+
 def rotate_quaternion_around_z(original_quaternion, theta):
     # Convert angle from degrees to radians
     # theta = math.radians(angle_in_degrees)
@@ -52,6 +53,7 @@ def quaternion_difference(q1, q2):
 #     tilt_angle = np.arcsin(q_drone_inv[2] / np.linalg.norm(q_drone_inv))  # pitch
 
 #     return pan_angle, tilt_angle
+
 
 def stabilize_camera_with_roll(q_drone, global_target=Quaternion(1, 0, 0, 0)):
     # Normalize the input quaternions
@@ -107,15 +109,11 @@ class PTZCameraController:
         )
 
         self.pan_sub = rospy.Subscriber(
-            "ptz_cam/ptz_pan_vel/command",
-            Float64,
-            self.pan_callback
+            "ptz_cam/ptz_pan_vel/command", Float64, self.pan_callback
         )
 
         self.tilt_sub = rospy.Subscriber(
-            "ptz_cam/ptz_tilt_vel/command",
-            Float64,
-            self.tilt_callback
+            "ptz_cam/ptz_tilt_vel/command", Float64, self.tilt_callback
         )
         # self.roll_sub = rospy.Subscriber(
         #     "ptz_cam/ptz_roll_vel/command",
@@ -123,7 +121,7 @@ class PTZCameraController:
         #     self.tilt_callback
         # )
 
-        #get the absolute drone pos
+        # get the absolute drone pos
         self.odom_sub = rospy.Subscriber(
             "/uav1/ground_truth/state",
             Odometry,
@@ -146,7 +144,7 @@ class PTZCameraController:
 
         # self._last_odom = None
         self.drone_quat = None
-        self.drone_euler = [0,0,0]
+        self.drone_euler = [0, 0, 0]
 
         self.diff = None
         self.pan_angle_diff = 0.0
@@ -161,7 +159,7 @@ class PTZCameraController:
 
     def odom_callback(self, od_data):
         # self._last_odom = od_data
-        #convert to euler
+        # convert to euler
         drone_quat = Quaternion(
             od_data.pose.pose.orientation.w,
             od_data.pose.pose.orientation.x,
@@ -171,7 +169,6 @@ class PTZCameraController:
         self.drone_quat = drone_quat
         self.drone_euler = drone_quat.to_euler(degrees=False)
         # self.pan_angle = self.pan_angle - self.drone_euler[0]
-        
 
     # def tilt_stabiliziation_callback(self, cmd):
     #     self.tilt_angle = self.tilt_angle + self.tilt_max_speed * cmd.data
@@ -182,7 +179,6 @@ class PTZCameraController:
         self.pan_angle_req = self.pan_angle_req + self.pan_max_speed * cmd.data
         print(f"{self.pan_angle=}, {self.pan_angle_req=}, {cmd.data=}")
         # self.pan_pub.publish(Float64(self.pan_angle))
-        
 
     def tilt_callback(self, cmd):
         self.tilt_angle_req = self.tilt_angle_req + self.tilt_max_speed * cmd.data
@@ -199,19 +195,16 @@ class PTZCameraController:
     #     self.pan_pub.publish(Float64(self.pan_angle))
     #     self.tilt_pub.publish(Float64(self.tilt_angle))
 
-
-    #how to deal w quaternion rotations https://danceswithcode.net/engineeringnotes/quaternions/quaternions.html
+    # how to deal w quaternion rotations https://danceswithcode.net/engineeringnotes/quaternions/quaternions.html
     def publish_ptz_vals_callback(self, event=None):
-        #transform the odom quaternion to the pan_angle frame
+        # transform the odom quaternion to the pan_angle frame
         # pan_frame = self.drone_euler
         # pan_frame = pan_frame[2] + self.pan_angle
         # Continuously publish the current angles
-        
-        
 
         if self.drone_quat is not None:
             pan, tilt, roll = stabilize_camera_with_roll(self.drone_quat)
-            #convert the ptz quat to drone quat
+            # convert the ptz quat to drone quat
             # camera_quat = Quaternion.from_euler(
             #     self.roll_angle,
             #     self.tilt_angle,
@@ -226,9 +219,8 @@ class PTZCameraController:
 
         # diff = diff.to_euler(degrees=False)
         # self.diff = diff
-        
 
-        #stabilize the pan angle
+        # stabilize the pan angle
         # self.pan_angle = self.pan_angle_req-self.drone_euler[2]
         self.pan_angle = pan + self.pan_angle_req
 
@@ -240,10 +232,10 @@ class PTZCameraController:
         self.pan_angle_diff = self.pan_angle - self.drone_euler[2]
         # print(f"angle diff {self.pan_angle=}{self.drone_euler[2]=}{angle_diff=}!")
 
-        # self.tilt_angle = -math.sin(self.pan_angle) * self.drone_euler[0] + math.cos(self.pan_angle) * self.drone_euler[1] 
-        # self.roll_angle = -math.sin(self.pan_angle) * self.drone_euler[1] + math.cos(self.pan_angle) * self.drone_euler[0] 
-        # self.tilt_angle = math.cos(angle_diff) * self.drone_euler[0] + math.sin(angle_diff) * self.drone_euler[1] 
-        # self.roll_angle = math.cos(angle_diff) * self.drone_euler[1] - math.sin(angle_diff) * self.drone_euler[0] 
+        # self.tilt_angle = -math.sin(self.pan_angle) * self.drone_euler[0] + math.cos(self.pan_angle) * self.drone_euler[1]
+        # self.roll_angle = -math.sin(self.pan_angle) * self.drone_euler[1] + math.cos(self.pan_angle) * self.drone_euler[0]
+        # self.tilt_angle = math.cos(angle_diff) * self.drone_euler[0] + math.sin(angle_diff) * self.drone_euler[1]
+        # self.roll_angle = math.cos(angle_diff) * self.drone_euler[1] - math.sin(angle_diff) * self.drone_euler[0]
         # camera_deg = camera_quat.to_euler(degrees=False)
 
         self.tilt_angle = -tilt + self.tilt_angle_req
@@ -252,12 +244,11 @@ class PTZCameraController:
 
         self.roll_angle = -roll
         # self.tilt_angle = self.drone_euler[1]
-        
-        
+
         # self.pan_angle = 0.0
         self.pan_pub.publish(Float64(self.pan_angle))
         self.tilt_pub.publish(Float64(self.tilt_angle))
-        # self.roll_pub.publish(Float64(self.roll_angle))
+        self.roll_pub.publish(Float64(self.roll_angle))
         # print(f"drone pan {self.drone_euler[2]}!")
         # print("Publishing timer!")
         # return
@@ -265,7 +256,6 @@ class PTZCameraController:
     def stabilizer_callback(self):
         self.tilt_angle = self.tilt_angle - self.drone_euler[1]
         print("Publishing timer!")
-
 
     def enforce_joint_limits(self):
         # Define your joint limits here if necessary
@@ -293,7 +283,6 @@ if __name__ == "__main__":
             rospy.Duration(0.001), controller.publish_ptz_vals_callback, reset=True
         )
         controller.run()
-
 
     except rospy.ROSInterruptException:
         pass
