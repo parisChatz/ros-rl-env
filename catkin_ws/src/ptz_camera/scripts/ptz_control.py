@@ -80,6 +80,56 @@ def stabilize_camera_with_roll(q_drone, global_target=Quaternion(1, 0, 0, 0)):
     return pan_angle, tilt_angle, roll_angle
 
 
+def stabilize_camera_with_operator_input_fixed(q_drone, target_pan_op=0, target_tilt_op=0, target_roll_op=0, global_target=Quaternion(1, 0, 0, 0)):
+    """
+    Stabilizes the camera with operator-specified pan and tilt angles, preserving stabilization.
+
+    Args:
+        q_drone (Quaternion): The drone's current orientation.
+        target_pan_op (float): Operator-defined pan angle (radians).
+        target_tilt_op (float): Operator-defined tilt angle (radians).
+        global_target (Quaternion): The desired global target orientation for the camera.
+
+    Returns:
+        (float, float, float): Pan, tilt, and roll angles to apply to the gimbal.
+    """
+    # Normalize the input quaternions
+    q_drone = q_drone.normalize
+    global_target = global_target.normalize
+
+    # Compute the stabilization quaternion
+    q_drone_inv = Quaternion(q_drone.w, -q_drone.x, -q_drone.y, -q_drone.z)
+    q_stabilize = q_drone_inv * global_target
+
+
+    # q_pan_op = Quaternion.from_euler(0, 0, target_pan_op)  # Pan (yaw) rotation about the z-axis
+    # q_tilt_op = Quaternion.from_euler(0, target_tilt_op, 0)  # Tilt (pitch) rotation about the y-axis
+
+    # Operator rotation quaternion (pan and tilt)
+    q_pan_op = Quaternion.from_euler(target_pan_op, 0, 0)  # Pan is a yaw rotation
+    q_tilt_op = Quaternion.from_euler(0, target_tilt_op, 0)  # Tilt is a pitch rotation
+    q_roll_op = Quaternion.from_euler(0, 0, target_roll_op)  # Roll (yaw about z-axis)
+
+    q_operator = q_tilt_op * q_pan_op * q_roll_op  # Combine pan and tilt as operator's desired adjustment
+
+    # Combine stabilization, operator-defined rotation, and fixed roll
+    q_combined = q_stabilize * q_operator
+
+    # Extract Euler angles from the combined quaternion
+    w, x, y, z = q_combined.w, q_combined.x, q_combined.y, q_combined.z
+
+    # Roll (around the camera's forward axis)
+    roll_angle = np.arctan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y))
+
+    # Tilt (pitch, around the side axis)
+    tilt_angle = np.arcsin(2 * (w * y - z * x))
+
+    # Pan (yaw, around the vertical axis)
+    pan_angle = np.arctan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z))
+
+    return pan_angle, tilt_angle, roll_angle
+
+
 class PTZCameraController:
     def __init__(self):
         # Initialize the ROS node
@@ -177,17 +227,17 @@ class PTZCameraController:
     def pan_callback(self, cmd):
         # self.pan_angle = self.pan_angle - self.drone_euler[0]
         self.pan_angle_req = self.pan_angle_req + self.pan_max_speed * cmd.data
-        print(f"{self.pan_angle=}, {self.pan_angle_req=}, {cmd.data=}")
+        # print(f"{self.pan_angle=}, {self.pan_angle_req=}, {cmd.data=}")
         # self.pan_pub.publish(Float64(self.pan_angle))
 
     def tilt_callback(self, cmd):
         self.tilt_angle_req = self.tilt_angle_req + self.tilt_max_speed * cmd.data
 
-        print(f"{self.tilt_angle=}, {self.tilt_angle_req=}, {cmd.data=}")
-        # print(f"{self.roll_angle=},{cmd.data=}")
-        print(f"{self.drone_euler=}")
-        print(f"{self.diff=}")
-        print(f"{self.pan_angle_diff=}")
+        # print(f"{self.tilt_angle=}, {self.tilt_angle_req=}, {cmd.data=}")
+        # # print(f"{self.roll_angle=},{cmd.data=}")
+        # print(f"{self.drone_euler=}")
+        # print(f"{self.diff=}")
+        # print(f"{self.pan_angle_diff=}")
         # self.tilt_pub.publish(Float64(self.tilt_angle))
 
     # def publish_angles(self):
@@ -203,7 +253,8 @@ class PTZCameraController:
         # Continuously publish the current angles
 
         if self.drone_quat is not None:
-            pan, tilt, roll = stabilize_camera_with_roll(self.drone_quat)
+            # pan, tilt, roll = stabilize_camera_with_roll(self.drone_quat)
+            pan, tilt, roll = stabilize_camera_with_operator_input_fixed(self.drone_quat, self.pan_angle_req, self.tilt_angle_req, target_roll_op=0.0)
             # convert the ptz quat to drone quat
             # camera_quat = Quaternion.from_euler(
             #     self.roll_angle,
@@ -222,7 +273,7 @@ class PTZCameraController:
 
         # stabilize the pan angle
         # self.pan_angle = self.pan_angle_req-self.drone_euler[2]
-        self.pan_angle = pan + self.pan_angle_req
+        self.pan_angle = pan
 
         # if self.drone_quat is not None:
         #     camera_quat =  rotate_quaternion_around_z(self.drone_quat, -self.drone_euler[2])
@@ -238,7 +289,7 @@ class PTZCameraController:
         # self.roll_angle = math.cos(angle_diff) * self.drone_euler[1] - math.sin(angle_diff) * self.drone_euler[0]
         # camera_deg = camera_quat.to_euler(degrees=False)
 
-        self.tilt_angle = -tilt + self.tilt_angle_req
+        self.tilt_angle = -tilt
         self.tilt_angle_diff = self.tilt_angle - self.drone_euler[1]
         # self.roll_angle = -camera_deg[1]
 
