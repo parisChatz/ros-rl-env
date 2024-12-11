@@ -26,7 +26,7 @@
                 </geometry>
             </collision>
             <inertial>
-                <mass value="0.05"/>
+                <mass value="0.0005"/>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <inertia ixx="0.000833" ixy="0" ixz="0" iyy="0.000833" iyz="0" izz="0.000833"/>
             </inertial>
@@ -38,7 +38,7 @@
             <parent link="${name}_base_link"/>
             <child link="${name}_pan_link"/>
             <axis xyz="0 0 -1"/>
-            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="1.0" velocity="1.0"/>
+            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="10.0" velocity="1.0"/>
         </joint>
 
         <!-- Pan Link -->
@@ -70,7 +70,7 @@
             <child link="${name}_tilt_link"/>
             <axis xyz="1 0 0"/>
             <!-- <limit lower="${-(tilt_limit/2) * M_PI / 180}" upper="${(tilt_limit/2) * M_PI / 180}" effort="10.0" velocity="10.0"/> -->
-            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="100.0" velocity="100.0"/>
+            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="10000.0" velocity="100.0"/>
         </joint>
 
         <!-- Tilt Link -->
@@ -89,7 +89,7 @@
                 </geometry>
             </collision>
             <inertial>
-                <mass value="0.0002"/>
+                <mass value="0.0001"/>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <inertia ixx="0.000128" ixy="0" ixz="0" iyy="0.000128" iyz="0" izz="0.000128"/>
             </inertial>
@@ -102,7 +102,7 @@
             <parent link="${name}_tilt_link"/>
             <child link="${name}_roll_link"/>
             <axis xyz="0 1 0"/>
-            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="100.0" velocity="100.0"/>
+            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="10000.0" velocity="100.0"/>
         </joint>
 
         <!-- Tilt Link -->
