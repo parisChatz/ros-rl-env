@@ -165,6 +165,10 @@ class PTZCameraController:
         self.tilt_sub = rospy.Subscriber(
             "ptz_cam/ptz_tilt_vel/command", Float64, self.tilt_callback
         )
+
+        self.roll_sub = rospy.Subscriber(
+            "ptz_cam/ptz_roll_vel/command", Float64, self.roll_callback
+        )
         # self.roll_sub = rospy.Subscriber(
         #     "ptz_cam/ptz_roll_vel/command",
         #     Float64,
@@ -186,11 +190,12 @@ class PTZCameraController:
 
         self.pan_angle_req = 0.0
         self.tilt_angle_req = 0.0
-        # self.roll_angle_req = 0.0
+        self.roll_angle_req = 0.0
 
         # Movement speeds (radians per step)
         self.pan_max_speed = rospy.get_param("~pan_speed", 0.05)
         self.tilt_max_speed = rospy.get_param("~tilt_speed", 0.05)
+        self.roll_max_speed = rospy.get_param("~roll_speed", 0.05)
 
         # self._last_odom = None
         self.drone_quat = None
@@ -240,6 +245,9 @@ class PTZCameraController:
         # print(f"{self.pan_angle_diff=}")
         # self.tilt_pub.publish(Float64(self.tilt_angle))
 
+
+    def roll_callback(self, cmd):
+        self.roll_angle_req = self.roll_angle_req + self.roll_max_speed * cmd.data
     # def publish_angles(self):
     #     # Publish commands to the joints
     #     self.pan_pub.publish(Float64(self.pan_angle))
@@ -254,7 +262,7 @@ class PTZCameraController:
 
         if self.drone_quat is not None:
             # pan, tilt, roll = stabilize_camera_with_roll(self.drone_quat)
-            pan, tilt, roll = stabilize_camera_with_operator_input_fixed(self.drone_quat, self.pan_angle_req, self.tilt_angle_req, target_roll_op=0.0)
+            pan, tilt, roll = stabilize_camera_with_operator_input_fixed(self.drone_quat, self.pan_angle_req, self.tilt_angle_req, target_roll_op=self.roll_angle_req)
             # convert the ptz quat to drone quat
             # camera_quat = Quaternion.from_euler(
             #     self.roll_angle,
