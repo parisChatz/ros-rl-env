@@ -38,7 +38,7 @@
             <parent link="${name}_base_link"/>
             <child link="${name}_pan_link"/>
             <axis xyz="0 0 -1"/>
-            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="10.0" velocity="1.0"/>
+            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="1000.0" velocity="1.0"/>
         </joint>
 
         <!-- Pan Link -->
@@ -64,13 +64,13 @@
         </link>
 
         <!-- Tilt joint: Pan Link to Camera Link (Pitch) -->
-        <joint name="${name}_tilt_joint" type="continuous">
+        <joint name="${name}_tilt_joint" type="revolute">
             <origin xyz="0 0 0.005" rpy="0 0 0"/>
             <parent link="${name}_pan_link"/>
             <child link="${name}_tilt_link"/>
             <axis xyz="1 0 0"/>
-            <!-- <limit lower="${-(tilt_limit/2) * M_PI / 180}" upper="${(tilt_limit/2) * M_PI / 180}" effort="10.0" velocity="10.0"/> -->
-            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="10000.0" velocity="100.0"/>
+            <limit lower="${-(tilt_limit/2) * M_PI / 180}" upper="${(tilt_limit/2) * M_PI / 180}" effort="10000.0" velocity="100.0"/>
+            <!-- <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="10000.0" velocity="100.0"/> -->
         </joint>
 
         <!-- Tilt Link -->
@@ -97,12 +97,13 @@
 
 
         <!-- Roll joint: roll Link to Camera Link (Roll) -->
-        <joint name="${name}_roll_joint" type="continuous">
+        <joint name="${name}_roll_joint" type="revolute">
             <origin xyz="0 0.06 0.01" rpy="0 0 0"/>
             <parent link="${name}_tilt_link"/>
             <child link="${name}_roll_link"/>
             <axis xyz="0 1 0"/>
-            <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="10000.0" velocity="100.0"/>
+            <limit lower="${-(tilt_limit/2) * M_PI / 180}" upper="${(tilt_limit/2) * M_PI / 180}" effort="10000.0" velocity="100.0"/>
+            <!-- <limit lower="${-(pan_limit/2) * M_PI / 180}" upper="${(pan_limit/2) * M_PI / 180}" effort="10000.0" velocity="100.0"/> -->
         </joint>
 
         <!-- Tilt Link -->

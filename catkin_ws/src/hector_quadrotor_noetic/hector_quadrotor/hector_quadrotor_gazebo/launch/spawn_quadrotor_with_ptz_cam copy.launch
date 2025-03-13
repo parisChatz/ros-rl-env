@@ -4,11 +4,10 @@
     <param name="use_sim_time" value="true" />
 
     <arg name="name" default="uav1"/>
-    <arg name="tf_prefix" default="uav1"/>
     <arg name="model" default="$(find hector_quadrotor_description)/urdf/quadrotor_with_ptz_cam.gazebo.xacro"/>
 
-    <arg name="hover" default="true"/>
-    <!-- <arg name="ptz_keyboard_control" default="false"/> -->
+    <arg name="hover" default="false"/>
+    <arg name="ptz_keyboard_control" default="false"/>
 
     <arg name="x" default="-2.0"/>
     <arg name="y" default="0.0"/>
@@ -25,7 +24,7 @@
         <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
             <arg name="name" default="$(arg name)"/>
             <arg name="model" value="$(arg model)"/>
-            <arg name="tf_prefix" default="$(arg tf_prefix)"/>
+            <arg name="tf_prefix" default="$(arg name)"/>
             <arg name="x" default="$(arg x)"/>
             <arg name="y" default="$(arg y)"/>
             <arg name="z" default="$(arg z)"/>   
@@ -35,25 +34,31 @@
         </include>
 
         <!-- Custom package for hovering on set Z height -->
-        <node pkg="hover_controller" type="drone_stabilizer2.py" name="drone_stabilizer_$(arg name)" output="log" if="$(arg hover)"/>
+        <node pkg="hover_controller" type="drone_stabilizer.py" name="drone_stabilizer" output="log" if="$(arg hover)"/>
 
         <!-- Load the controller configurations -->
         <rosparam ns="ptz_cam" file="$(find hector_quadrotor_controller)/params/ptz_camera_controllers.yaml" command="load"/>
 
         <!-- Start the controller spawner -->
-        <node name="ptz_camera_controller_spawner" pkg="controller_manager" type="spawner" respawn="true" output="screen" ns="ptz_cam"
-            args="joint_state_controller ptz_pan_controller ptz_tilt_controller ptz_roll_controller"/>
+        <node name="ptz_camera_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="ptz_cam"
+            args="joint_state_controller ptz_cam_pan_position_controller ptz_cam_tilt_position_controller"/>
     
         <!-- Launch the PTZ Camera Controller Node -->
-        <node name="PTZCameraController" pkg="ptz_camera" type="ptz_control.py" output="screen"/>
-
-        <!-- <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="ptz_cam_teleop_twist_keyboard" output="screen" if="$(arg ptz_keyboard_control)">
+        <node name="PTZCameraController" pkg="ptz_camera" type="ptz_control.py" output="screen" if="$(arg ptz_keyboard_control)"/>
+        <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="ptz_cam_teleop_twist_keyboard" output="screen" if="$(arg ptz_keyboard_control)">
             <remap from="cmd_vel" to="ptz_cam/cmd_vel"/>
-        </node> -->
+        </node>
         
         <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
-            <param name="publish_rate" type="double" value="1000.0" />
+            <param name="publish_rate" type="double" value="100.0" />
+            <param name="use_gui" value="false" />
+            <rosparam param="source_list">
+                - ptz_cam_pan_joint
+                - ptz_cam_tilt_joint
+            </rosparam>
         </node>
+
+
     </group>
 
 

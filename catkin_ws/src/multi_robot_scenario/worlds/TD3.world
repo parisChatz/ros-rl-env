@@ -27,8 +27,11 @@
           <surface>
             <friction>
               <ode>
-                <mu>100</mu>
-                <mu2>50</mu2>
+                <!-- <mu>100</mu>
+                <mu2>50</mu2> -->
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+
               </ode>
               <torsional>
                 <ode/>
@@ -39,7 +42,7 @@
             </contact>
             <bounce/>
           </surface>
-          <max_contacts>10</max_contacts>
+          <max_contacts>20</max_contacts>
         </collision>
         <visual name='visual'>
           <cast_shadows>0</cast_shadows>
@@ -62,16 +65,21 @@
       </link>
     </model>
     <gravity>0 0 -9.8</gravity>
-    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <!-- <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field> -->
     <atmosphere type='adiabatic'/>
-    <physics name='default_physics' default='0' type='ode'>
-      <max_step_size>0.001</max_step_size>
+    <!-- <physics name='default_physics' default='0' type='bullet'> -->
+    <physics name='bullet_physics' type='bullet'>
+      <max_step_size>0.015</max_step_size>
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>0</real_time_update_rate>
+      <!-- <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate> -->
       <ode>
         <solver>
-          <thread_position_correction>1</thread_position_correction>
-          <island_threads>500</island_threads>
+          <!-- <thread_position_correction>1</thread_position_correction> -->
+          <island_threads>50</island_threads>
+          <!-- <island_threads>500</island_threads> -->
         </solver>
       </ode>
     </physics>
@@ -133,6 +141,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -140,7 +153,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -217,6 +234,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -224,7 +246,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -301,6 +327,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -308,7 +339,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -385,6 +420,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -392,7 +432,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -469,6 +513,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -476,7 +525,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -553,6 +606,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -560,7 +618,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -637,6 +699,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -644,7 +711,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -721,6 +792,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -728,7 +804,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -805,6 +885,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -812,7 +897,11 @@
                 <use_patch_radius>1</use_patch_radius>
                 <ode>
                   <slip>0</slip>
-                </ode>
+                </ode>        
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -889,6 +978,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -897,6 +991,10 @@
                 <ode>
                   <slip>0</slip>
                 </ode>
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -973,6 +1071,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -981,6 +1084,10 @@
                 <ode>
                   <slip>0</slip>
                 </ode>
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -1057,6 +1164,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -1065,6 +1177,10 @@
                 <ode>
                   <slip>0</slip>
                 </ode>
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -1141,6 +1257,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -1149,6 +1270,10 @@
                 <ode>
                   <slip>0</slip>
                 </ode>
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -1225,6 +1350,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -1233,6 +1363,10 @@
                 <ode>
                   <slip>0</slip>
                 </ode>
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -1309,6 +1443,11 @@
                 <slip1>0</slip1>
                 <slip2>0</slip2>
               </ode>
+              <bullet>
+                <friction>1</friction>
+                <rolling_friction>0</rolling_friction>
+                <spinning_friction>0</spinning_friction>
+              </bullet>
               <torsional>
                 <coefficient>1</coefficient>
                 <patch_radius>0</patch_radius>
@@ -1317,6 +1456,10 @@
                 <ode>
                   <slip>0</slip>
                 </ode>
+                <bullet>
+                  <rolling_friction>0</rolling_friction>
+                  <spinning_friction>0</spinning_friction>
+                </bullet>
               </torsional>
             </friction>
             <bounce>
@@ -1352,7 +1495,7 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose frame=''>0.000564 -0.000118 0 0 -0 0</pose>
     </model>
-    <model name='fire_hydrant'>
+    <!-- <model name='fire_hydrant'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -1389,7 +1532,7 @@
         <gravity>1</gravity>
       </link>
       <pose frame=''>-4.57173 4.55086 0 0 -0 0</pose>
-    </model>
+    </model> -->
     <model name='bookshelf'>
       <static>1</static>
       <link name='link'>
@@ -1407,13 +1550,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1442,13 +1588,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1477,13 +1626,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1512,13 +1664,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1547,13 +1702,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1582,13 +1740,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1617,13 +1778,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1658,19 +1822,19 @@
             </box>
           </geometry>
           <surface>
-            <friction>
-              <ode>
-                <mu>0.6</mu>
-                <mu2>0.6</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+                <bullet/>
+              </torsional>
+              <ode/>
+              <bullet/>
+            </friction>
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
@@ -1700,13 +1864,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1737,13 +1904,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1774,13 +1944,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1811,13 +1984,16 @@
           <surface>
             <contact>
               <ode/>
+              <bullet/>
             </contact>
             <bounce/>
             <friction>
               <torsional>
                 <ode/>
+                <bullet/>
               </torsional>
               <ode/>
+              <bullet/>
             </friction>
           </surface>
         </collision>
@@ -1962,7 +2138,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='fire_hydrant'>
+      <!-- <model name='fire_hydrant'>
         <pose frame=''>-4.57173 4.55086 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
@@ -1971,7 +2147,7 @@
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
-      </model>
+      </model> -->
       <model name='ground_plane'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>

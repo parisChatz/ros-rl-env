@@ -11,6 +11,14 @@
         </plugin>
     </gazebo>
   </xacro:macro>
+
+  <xacro:macro name="pioneer3dx_pose">
+    <gazebo>
+        <plugin name="robot_pose_publisher" filename="librobot_pose_publisher.so">
+	        <updateRate>100</updateRate>
+        </plugin>
+    </gazebo>
+  </xacro:macro>
   
 
   <xacro:macro name="pioneer3dx_diff_drive">
@@ -32,11 +40,13 @@
             <odometryFrame>odom</odometryFrame>
             <odometrySource>world</odometrySource>
             <robotBaseFrame>base_link</robotBaseFrame>
-	    <updateRate>50</updateRate>
+	    <updateRate>100</updateRate>
         </plugin>
     </gazebo>
 
   </xacro:macro>
+
+
 
 
 

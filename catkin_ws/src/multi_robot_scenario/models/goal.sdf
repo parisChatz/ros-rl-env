@@ -2,23 +2,37 @@
 
 <sdf version="1.6">
   <model name="goal">
-    <pose frame=''>0 0 0.5 0 0 0</pose>
+    <static>true</static>
+    <pose frame=''>0 0 -0.5 0 0 0</pose>
     <link name="link">
-      <visual name="visual">
+      <collision name="goal_collision">
         <geometry>
-          <sphere>
-            <radius>0.3</radius>
-          </sphere>
+          <mesh>
+            <uri>file://gate.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
         </geometry>
-        <material>
-          <ambient>1 0 1</ambient>
-          <diffuse>1 0 1</diffuse>
+      </collision>
+      <visual name="goal_visual">
+        <geometry>
+          <!-- <sphere>
+            <radius>0.5</radius>
+          </sphere> -->
+          <mesh>
+            <uri>file://gate.dae</uri>
+            <scale>1.0 1.0 1.0</scale>
+          </mesh>
+        </geometry>
+      <material>
+          <ambient>0.5 0.5 0.5</ambient>
+          <diffuse>0.5 0.5 0.5</diffuse>
           <specular>0.1 0.1 0.1 1</specular>
           <emissive>0 0 0 1</emissive>
-        </material>
+      </material>
       </visual>
-      <self_collide>0</self_collide>
-      <kinematic>0</kinematic>
+
+      <!-- <self_collide>0</self_collide>
+      <kinematic>0</kinematic> -->
       <gravity>0</gravity>
     </link>
   </model>

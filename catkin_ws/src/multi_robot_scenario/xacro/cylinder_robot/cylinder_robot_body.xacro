@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="inertia_tensors.xacro"/>
+  <xacro:include filename="pioneer3dx_chassis.xacro"/>
+  <xacro:include filename="battery_block.xacro"/>
+  <xacro:include filename="pioneer3dx_wheel.xacro"/>
+  <xacro:include filename="pioneer3dx_swivel.xacro"/>
+  <xacro:include filename="pioneer3dx_sonar.xacro"/>
+  <xacro:include filename="pioneer3dx_plugins.xacro"/>
+
+  <xacro:macro name="cylinder_robot_body" params="name parent meshes">
+
+    <!-- base_link -->
+    <link name="${parent}"/>
+
+    <!-- Chassis -->
+    <xacro:robot_chassis name="${name}" parent="base_link" xyz="0 0 0" rpy="0 0 0"  meshes="${meshes}"/>
+
+
+  </xacro:macro>
+</robot>

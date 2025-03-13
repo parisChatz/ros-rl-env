@@ -111,8 +111,19 @@ catkin_package(
 #  LIBRARIES multi_robot_scenario
   CATKIN_DEPENDS xacro roscpp rospy std_msgs message_runtime gazebo_ros
 #  DEPENDS system_lib
-
 )
+
+
+catkin_package(
+#  INCLUDE_DIRS include
+  LIBRARIES robot_pose_publisher
+  CATKIN_DEPENDS roscpp gazebo_ros std_msgs
+)
+
+
+
+
+
 
 ###########
 ## Build ##
@@ -123,15 +134,20 @@ link_directories(${GAZEBO_LIBRARY_DIRS})
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
   ${catkin_INCLUDE_DIRS}
-  ${GAZEBO_include_DIRS}
+  ${GAZEBO_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/multi_robot_scenario.cpp
 # )
+
+#add_library(robot_pose_publisher src/RobotPosePublisher.cpp)
+add_library(robot_pose_publisher plugins/src/RobotPosePublisher.cpp)
+
+target_link_libraries(robot_pose_publisher ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
